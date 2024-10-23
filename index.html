@@ -48,30 +48,34 @@
 
         // VIEWS
         const indexView = (movies) => {
-            let i=0;
+            let i = 0;
             let view = "";
-
-            while(i < movies.length) {
-              view += `
-                <div class="movie">
-                   <div class="movie-img">
-                        <img data-my-id="${i}" src="${movies[i].thumbnail}" onerror="this.src='files/noimage.png'"/>
-                   </div>
-                   <div class="title">
-                       ${movies[i].title || "<em>No title</em>"}
-                   </div>
-                   <div class="actions">
-                        <!-------------------Insert here "Show" and "Delete" buttons------------------>
-                       <button class="edit" data-my-id="${i}">edit</button>
-                    </div>
-                </div>\n`;
-              i = i + 1;
+        
+            while (i < movies.length) {
+                view += `
+                    <div class="movie">
+                       <div class="movie-img">
+                            <img data-my-id="${i}" src="${movies[i].thumbnail}" onerror="this.src='files/noimage.png'"/>
+                       </div>
+                       <div class="title">
+                           ${movies[i].title || "<em>No title</em>"}
+                       </div>
+                       <div class="actions">
+                            <!-------------------Insert here "Show" and "Delete" buttons------------------>
+                            <button class="show" data-my-id="${i}">Show</button>
+                            <button class="delete" data-my-id="${i}">Delete</button>
+                            <button class="edit" data-my-id="${i}">Edit</button>
+                        </div>
+                    </div>\n`;
+                i = i + 1;
             };
-
+        
             view += `<div class="actions">
                         <!-----------------------Insert here "Add" and "Reset" buttons---------------->
+                        <button class="add">Add</button>
+                        <button class="reset">Reset</button>
                     </div>`;
-
+        
             return view;
         };
 
