@@ -107,6 +107,10 @@
         const showView = (movie) => {
             // Complete: generate HTML with movie information
             // ...
+            let html = `<h2>${movie.title}</h2>`;
+            html += `<p>Directed by: ${movie.director}</p>`;
+            html += `<img src="${movie.thumbnail}" alt="${movie.title}">`;
+            document.getElementById('main').innerHTML = html;            
 
             return `
              <p>
@@ -123,6 +127,15 @@
         const newView = () => {
             // Complete: generate form to create new movie
             // ...
+
+            let html = `<h2>Add New Movie</h2>`;
+            html += `<form id="new-movie-form">
+                        <label>Title: <input type="text" id="new-title"></label><br>
+                        <label>Director: <input type="text" id="new-director"></label><br>
+                        <label>Thumbnail URL: <input type="text" id="new-thumbnail"></label><br>
+                        <button type="button" class="create">Create</button>
+                     </form>`;
+            document.getElementById('main').innerHTML = html;
 
             return `<h2>Create Movie</h2>
 
@@ -147,18 +160,32 @@
         const showContr = (i) => {
             // Complete: controller that shows the showView(movie)
             // ...
+            const movie = movies[i];
+            showView(movie);
 
         };
 
         const newContr = () => {
             // Complete: controller that shows the newView()
             // ...
+            newView();
 
         };
 
         const createContr = () => {
             // Complete: controller that creates a new movie in the model saved in localStorage
             // ...
+            const title = document.getElementById('new-title').value;
+            const director = document.getElementById('new-director').value;
+            const thumbnail = document.getElementById('new-thumbnail').value;
+    
+            if (title && director && thumbnail) {
+                movies.push({ title, director, thumbnail });
+                localStorage.setItem('my_movies', JSON.stringify(movies));
+                indexContr();  // Refresh the main view
+            } else {
+                alert("Please fill in all the fields");
+            }
         };
 
         const editContr = (i) => {
@@ -180,11 +207,20 @@
         const deleteContr = (i) => {
             // Complete: controller that updates the model by deleting the selected movie
             // Generates confirmation dialog: Accept button returns true, Cancel false
+            if (confirm("Are you sure you want to delete this movie?")) {
+                movies.splice(i, 1);
+                localStorage.setItem('my_movies', JSON.stringify(movies));
+                indexContr();  // Refresh the main view
+            }
         };
 
 
         const resetContr = () => {
             // Complete: controller that resets the model saved in localStorage with the original movies
+            
+            localStorage.removeItem('my_movies');
+            initMovies();  // Reinitialize the default movies
+            indexContr();
             
         };
 
