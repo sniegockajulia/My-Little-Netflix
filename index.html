@@ -63,8 +63,6 @@
                    <div class="actions">
                         <!-------------------Insert here "Show" and "Delete" buttons------------------>
                        <button class="edit" data-my-id="${i}">edit</button>
-                       <button class="show" data-my-id="${i}">Show</button>
-                       <button class="delete" data-my-id="${i}">Delete</button>
                     </div>
                 </div>\n`;
               i = i + 1;
@@ -72,8 +70,6 @@
 
             view += `<div class="actions">
                         <!-----------------------Insert here "Add" and "Reset" buttons---------------->
-                        <button class="new">Add</button>
-                        <button class="reset">Reset</button>
                     </div>`;
 
             return view;
@@ -113,13 +109,15 @@
             // ...
 
             return `
-                <h2>${movie.title}</h2>
-                <p>Director: ${movie.director}</p>
-                <div class="actions">
-                    <button class="index">Back</button>
-                </div>
-            `;
-        };
+             <p>
+
+             
+             
+             </p>
+             <div class="actions">
+                <button class="index">Back</button>
+             </div>`;
+        }
 
 
         const newView = () => {
@@ -128,33 +126,14 @@
 
             return `<h2>Create Movie</h2>
 
+
+
+
+
                 <div class="actions">
                     <button class="index">Back</button>
                 </div>`;
         }
-
-        const newView = () => {
-            return `
-                <h2>Create New Movie</h2>
-                <div class="field">
-                    Title <br>
-                    <input type="text" id="new-title" placeholder="Title">
-                </div>
-                <div class="field">
-                    Director <br>
-                    <input type="text" id="new-director" placeholder="Director">
-                </div>
-                <div class="field">
-                    Thumbnail <br>
-                    <input type="text" id="new-thumbnail" placeholder="Thumbnail URL">
-                </div>
-                <div class="actions">
-                    <button class="create">Create</button>
-                    <button class="index">Back</button>
-                </div>
-            `;
-        };
-
 
 
 
@@ -168,8 +147,6 @@
         const showContr = (i) => {
             // Complete: controller that shows the showView(movie)
             // ...
-            let my_movies = JSON.parse(localStorage.my_movies);
-            document.getElementById('main').innerHTML = showView(my_movies[i]);
 
         };
 
@@ -221,12 +198,9 @@
             else if (matchEvent(ev, '.edit'))   editContr   (myId(ev));
             else if (matchEvent(ev, '.update')) updateContr (myId(ev));
             // Complete by adding the missing controllers
-            else if (matchEvent(ev, '.show')) showContr (myId(ev));
-            else if (matchEvent(ev, '.new')) newContr();
-            else if (matchEvent(ev, '.create')) createContr();
-            else if (matchEvent(ev, '.delete')) deleteContr (myId(ev));
-            else if (matchEvent(ev, '.reset'))  resetContr();
-        })      
+        })
+
+        
         
         // Initialization        
         document.addEventListener('DOMContentLoaded', indexContr);
