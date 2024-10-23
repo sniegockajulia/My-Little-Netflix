@@ -63,6 +63,8 @@
                    <div class="actions">
                         <!-------------------Insert here "Show" and "Delete" buttons------------------>
                        <button class="edit" data-my-id="${i}">edit</button>
+                       <button class="show" data-my-id="${i}">Show</button>
+                       <button class="delete" data-my-id="${i}">Delete</button>
                     </div>
                 </div>\n`;
               i = i + 1;
@@ -70,6 +72,8 @@
 
             view += `<div class="actions">
                         <!-----------------------Insert here "Add" and "Reset" buttons---------------->
+                        <button class="new">Add</button>
+                        <button class="reset">Reset</button>
                     </div>`;
 
             return view;
@@ -109,11 +113,9 @@
             // ...
 
             return `
-             <p>
-
-             
-             
-             </p>
+             <h2>${movie.title}</h2>
+             <p><strong>Director:</strong> ${movie.director}</p>
+             <img data-my-id="${movie.myId}" src="${movie.thumbnail}" onerror="this.src='files/noimage.png'"/>
              <div class="actions">
                 <button class="index">Back</button>
              </div>`;
@@ -125,12 +127,21 @@
             // ...
 
             return `<h2>Create Movie</h2>
-
-
-
-
+                <div class="field">
+                    Title <br>
+                    <input type="text" id="new-title" placeholder="Title">
+                </div>
+                <div class="field">
+                    Director <br>
+                    <input type="text" id="new-director" placeholder="Director">
+                </div>
+                <div class="field">
+                    Thumbnail <br>
+                    <input type="text" id="new-thumbnail" placeholder="Thumbnail URL">
+                </div>
 
                 <div class="actions">
+                    <button class="create">Create</button>
                     <button class="index">Back</button>
                 </div>`;
         }
@@ -147,18 +158,35 @@
         const showContr = (i) => {
             // Complete: controller that shows the showView(movie)
             // ...
+            let my_movies = JSON.parse(localStorage.my_movies);
+            document.getElementById('main').innerHTML = showView(my_movies[i]);
 
         };
 
         const newContr = () => {
             // Complete: controller that shows the newView()
             // ...
+            document.getElementById('main').innerHTML = newView();
 
         };
 
         const createContr = () => {
             // Complete: controller that creates a new movie in the model saved in localStorage
             // ...
+            let my_movies = JSON.parse(localStorage.my_movies);
+            let newMovie = {
+                title: document.getElementById('new-title').value,
+                director: document.getElementById('new-director').value,
+                thumbnail: document.getElementById('new-thumbnail').value
+            };
+            
+            if (newMovie.title && newMovie.director && newMovie.thumbnail) {
+                my_movies.push(newMovie);
+                localStorage.my_movies = JSON.stringify(my_movies);
+                indexContr();
+            } else {
+                alert("Please fill in all fields.");
+            }
         };
 
         const editContr = (i) => {
@@ -180,12 +208,21 @@
         const deleteContr = (i) => {
             // Complete: controller that updates the model by deleting the selected movie
             // Generates confirmation dialog: Accept button returns true, Cancel false
+            if (confirm("Are you sure you want to delete this movie?")) {
+                let my_movies = JSON.parse(localStorage.my_movies);
+                my_movies.splice(i, 1);
+                localStorage.my_movies = JSON.stringify(my_movies);
+                indexContr();
+            }
         };
 
 
         const resetContr = () => {
             // Complete: controller that resets the model saved in localStorage with the original movies
-            
+            if (confirm("Are you sure you want to reset the database?")) {
+                localStorage.my_movies = JSON.stringify(initial_movies);
+                indexContr();
+            }
         };
 
 
@@ -198,10 +235,13 @@
             else if (matchEvent(ev, '.edit'))   editContr   (myId(ev));
             else if (matchEvent(ev, '.update')) updateContr (myId(ev));
             // Complete by adding the missing controllers
+            else if (matchEvent(ev, '.show')) showContr (myId(ev));
+            else if (matchEvent(ev, '.new')) newContr();
+            else if (matchEvent(ev, '.create')) createContr();
+            else if (matchEvent(ev, '.delete')) deleteContr (myId(ev));
+            else if (matchEvent(ev, '.reset')) resetContr();
         })
-
-        
-        
+   
         // Initialization        
         document.addEventListener('DOMContentLoaded', indexContr);
     </script>
